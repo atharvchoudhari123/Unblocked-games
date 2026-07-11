@@ -1,12 +1,14 @@
 {
-  "name": "atharv's-unblocked-games",
+  "name": "atharvs-unblocked-games",
   "version": "1.0.0",
-  "description": "Local server for static games site",
+  "description": "Unblocked games site with Scramjet Proxy",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
+    "@clover-network/wisp-server-node": "^1.1.2",
     "express": "^4.19.2"
   }
 }
