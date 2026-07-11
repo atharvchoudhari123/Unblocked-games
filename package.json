@@ -1,0 +1,12 @@
+{
+  "name": "atharv's-unblocked-games",
+  "version": "1.0.0",
+  "description": "Local server for static games site",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

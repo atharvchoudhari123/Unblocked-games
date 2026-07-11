@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atharv's unblocked games</title>
+    <style>
+        #fullscreen-btn {
+            display: none; 
+            margin: 10px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #fullscreen-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+  <h1 style="text-align: center;">Atharv's unblocked games</h1>
+
+
+  <div id="search-area">
+    <iframe src="search.html" style="width: 1500px; height: 60px; border: none; display: block; margin: 0 auto;"></iframe>
+  </div>
+
+ 
+  <div style="text-align: center;">
+    <button id="fullscreen-btn" onclick="goFullscreen()">Play Fullscreen</button>
+  </div>
+
+ 
+  <iframe id="game-frame" name="main-display" src="games.html" width="1500" height="800" style="border: none; display: block; margin: 0 auto;"></iframe>
+
+  <script>
+    const iframe = document.getElementById('game-frame');
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+    const searchArea = document.getElementById('search-area');
+
+   
+    iframe.addEventListener('load', function() {
+        try {
+            if (iframe.contentWindow.location.href.includes('games.html')) {
+                fullscreenBtn.style.display = 'none'; 
+                searchArea.style.display = 'block';   
+            } else {
+                fullscreenBtn.style.display = 'inline-block'; 
+                searchArea.style.display = 'none';           
+            }
+        } catch (e) {
+            
+            fullscreenBtn.style.display = 'inline-block';
+            searchArea.style.display = 'none';
+        }
+    });
+
+   
+    function goFullscreen() {
+    
+        let gameUrl = iframe.src;
+        try {
+            gameUrl = iframe.contentWindow.location.href;
+        } catch(e) {}
+
+       
+        const newWindow = window.open('about:blank', '_blank');
+        
+        if (newWindow) {
+            const doc = newWindow.document;
+            
+            doc.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Play in A:B</title>
+                    <style>
+                        body, html {
+                            margin: 0;
+                            padding: 0;
+                            width: 100%;
+                            height: 100%;
+                            overflow: hidden;
+                            background-color: #000;
+                        }
+                        iframe {
+                            width: 100%;
+                            height: 100%;
+                            border: none;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <iframe src="${gameUrl}"></iframe>
+                </body>
+                </html>
+            `);
+            doc.close();
+        } else {
+            alert('Popup blocked! Please allow popups for this site to play in a fullscreen tab.');
+        }
+    }
+  </script>
+
+</body>
+</html>
