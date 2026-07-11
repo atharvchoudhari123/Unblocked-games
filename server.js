@@ -1,25 +1,31 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import http from 'http';
+import { wispServer } from '@clover-network/wisp-server-node';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
+const server = http.createServer(app);
 const PORT = process.env.PORT || 3000;
 
-// Serve all your static files (index.html, games.html, search.html, etc.)
-app.use(express.static(__dirname));
 
-// Handle the /search route submitted by search.html
-app.get('/search', (req, res) => {
-    const searchQuery = req.query.q;
-    // Right now, this just redirects back to home. 
-    // You can update this later to filter games programmatically!
-    console.log(`User searched for: ${searchQuery}`);
-    res.redirect(`/?search=${encodeURIComponent(searchQuery)}`);
-});
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Fallback to send index.html for the home route
+
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+
+server.on('upgrade', (req, socket, head) => {
+    if (req.url.startsWith('/wisp/')) {
+        wispServer(req, socket, head);
+    } else {
+        socket.destroy();
+    }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running smoothly at http://localhost:${PORT}`);
+server.listen(PORT, () => {
+    console.log(`Scramjet Game Server running on http://localhost:${PORT}`);
 });
