@@ -11,13 +11,15 @@ const app = express();
 const server = http.createServer(app);
 const PORT = process.env.PORT || 3000;
 
-
+// Serve everything from the 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+// Fallback to index.html inside the public folder
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
+// Route for handling WebSocket proxy requests (Wisp Protocol)
 server.on('upgrade', (req, socket, head) => {
     if (req.url.startsWith('/wisp/')) {
         wispServer(req, socket, head);
